@@ -13,13 +13,13 @@ provider "docker" {
 }
 
 # Creating a Docker Image ubuntu with the latest as the Tag.
-resource "docker_image" "ubuntu-24-10" {
+resource "docker_image" "ubuntu-latest" {
   name = "ubuntu:latest"
 }
 
 # Creating a Docker Container using the latest ubuntu image.
 resource "docker_container" "webserver" {
-  image             = docker_image.ubuntu-24-10.name
+  image             = docker_image.ubuntu-latest.name
   name              = "terraform-docker-test"
   must_run          = true
   publish_all_ports = true
@@ -30,13 +30,13 @@ resource "docker_container" "webserver" {
   ]
 }
 
-resource "docker_image" "nginx-stable" {
+resource "docker_image" "nginx-latest" {
   name         = "nginx:latest"
   keep_locally = false
 }
 
 resource "docker_container" "nginx" {
-  image = docker_image.nginx-stable.name
+  image = docker_image.nginx-latest.name
   name  = "nginx-test"
   ports {
     internal = 80
