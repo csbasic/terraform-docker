@@ -2,7 +2,7 @@ terraform {
   required_providers {
     docker = {
       source  = "kreuzwerker/docker"
-      version = "2.23.1"
+      version = "3.0.2"
     }
   }
 }
@@ -32,20 +32,20 @@ resource "docker_container" "webserver" {
 
 resource "docker_image" "nginx-latest" {
   name         = "nginx:latest"
-  keep_locally = false
+  keep_locally = true
 }
 
 resource "docker_container" "nginx" {
   image = docker_image.nginx-latest.name
-  name  = "nginx-test"
+  name  = "nginx-dev"
   ports {
     internal = 80
-    external = 8000
+    external = 9000
   }
 }
 
 resource "docker_network" "private_network" {
-  name = "my_network"
+  name = "Moluwe"
 }
 
 # node should be a swarm manager. Use "docker swarm init" or "docker swarm join" to connect
@@ -55,7 +55,7 @@ resource "docker_network" "private_network" {
 #}
 
 resource "docker_volume" "shared_volume" {
-  name = "shared_volume"
+  name = "elsa_volume"
 }
 
 #The source image must exist on the machine running the docker daemon.
