@@ -24,7 +24,7 @@ terraform {
   required_providers {
     docker = {
       source  = "kreuzwerker/docker"
-      version = "2.23.1"
+      version = "3.0.2"
     }
   }
 }
@@ -35,13 +35,13 @@ provider "docker" {
 }
 
 # Creating a Docker Image ubuntu with the latest as the Tag.
-resource "docker_image" "ubuntu-24-10" {
+resource "docker_image" "ubuntu-latest" {
   name = "ubuntu:latest"
 }
 
 # Creating a Docker Container using the latest ubuntu image.
 resource "docker_container" "webserver" {
-  image             = docker_image.ubuntu-24-10.name
+  image             = docker_image.ubuntu-latest.name
   name              = "terraform-docker-test"
   must_run          = true
   publish_all_ports = true
@@ -52,26 +52,26 @@ resource "docker_container" "webserver" {
   ]
 }
 
-resource "docker_image" "nginx-stable" {
+resource "docker_image" "nginx-latest" {
   name         = "nginx:latest"
-  keep_locally = false
+  keep_locally = true
 }
 
 resource "docker_container" "nginx" {
-  image = docker_image.nginx-stable.name
-  name  = "nginx-test"
+  image = docker_image.nginx-latest.name
+  name  = "nginx-dev"
   ports {
     internal = 80
-    external = 8000
+    external = 9000
   }
 }
 
 resource "docker_network" "private_network" {
-  name = "my_network"
+  name = "Moluwe"
 }
 
 resource "docker_volume" "shared_volume" {
-  name = "shared_volume"
+  name = "elsa_volume"
 }
 
 ```
